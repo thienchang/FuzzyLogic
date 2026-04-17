@@ -7,6 +7,8 @@ Created on Apr 5, 2026
 import numpy as np 
 import skfuzzy as fz 
 from skfuzzy import control as ctrl
+import matplotlib.pyplot as plt
+import os
 
 ### Tạo 2 không gian nền Tiền đề và 1 không gian nền Kết luận 
 X = np.arange( 1,11,1 ) 
@@ -18,22 +20,33 @@ Tin  = ctrl.Antecedent( Y,"Nhiet do trong phong" )
 Tout = ctrl.Antecedent( Z,"Nhiet do ngoai troi" )
 L    = ctrl.Consequent( W,"Muc dieu chinh" )
 
+# Đảm bảo đường dẫn đúng tới src/main/resources
+project_root = os.path.abspath(os.path.join(os.getcwd(), "..", "..", ".."))
+resources_dir = os.path.join(project_root, "src", "main", "resources")
+os.makedirs(resources_dir, exist_ok=True)
+
 N["It nguoi"] = fz.trapmf( N.universe,[1,1,2,3] ) 
 N["Trung binh"] = fz.trapmf( N.universe,[2,3,5,6] ) 
 N["Nhieu nguoi"] = fz.trapmf( N.universe,[5,6,7,8] ) 
 N["Rat nhieu"] = fz.trapmf( N.universe,[7,8,10,10] ) 
 N.view()
+save_path = os.path.join(resources_dir, "SoNguoi_membership.pdf")
+plt.savefig(save_path, format='pdf', bbox_inches='tight')
 
 Tin["Lanh"] = fz.trapmf( Tin.universe,[18,18,19,21] ) 
 Tin["Vua"] = fz.trapmf( Tin.universe,[20,22,25,27] ) 
 Tin["Nong"] = fz.trapmf( Tin.universe,[26,28,30,30] ) 
 Tin.view()
+save_path = os.path.join(resources_dir, "NhietDoTrongPhong_membership.pdf")
+plt.savefig(save_path, format='pdf', bbox_inches='tight')
 
 Tout["Lanh"] = fz.trapmf( Tout.universe,[20,20,21,22] )
 Tout["Vua"] = fz.trapmf( Tout.universe,[21,23,26,28] )
 Tout["Nong"] = fz.trapmf( Tout.universe,[27,29,34,36] )
 Tout["Rat nong"] = fz.trapmf( Tout.universe,[35,38,40,40] )
 Tout.view()
+save_path = os.path.join(resources_dir, "NhietDoNgoaiPhong_membership.pdf")
+plt.savefig(save_path, format='pdf', bbox_inches='tight')
 
 L["Rat thap"] = fz.trimf( L.universe,[18,18,20] )
 L["Thap"] = fz.trimf( L.universe,[19,20,22] )
@@ -41,6 +54,9 @@ L["Trung binh"] = fz.trapmf( L.universe,[21,22,23,24] )
 L["Cao"] = fz.trapmf( L.universe,[23,24,25,26] )
 L["Rat cao"] = fz.trapmf( L.universe,[25,26,27,27] )
 L.view()
+save_path = os.path.join(resources_dir, "MucDieuChinh_membership.pdf")
+plt.savefig(save_path, format='pdf', bbox_inches='tight')
+plt.show()
 
 R1_2   = ctrl.Rule( N["It nguoi"] & Tin["Lanh"] & (Tout["Lanh"] | Tout["Vua"]), L["Rat cao"] )
 R3_4   = ctrl.Rule( N["It nguoi"] & Tin["Lanh"] & (Tout["Nong"] | Tout["Rat nong"]), L["Cao"] )
