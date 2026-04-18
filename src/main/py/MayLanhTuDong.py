@@ -17,7 +17,7 @@ Z = np.arange( 20,41,1 )
 W = np.arange( 18,28,1 ) 
 N    = ctrl.Antecedent( X,"So nguoi" ) 
 Tin  = ctrl.Antecedent( Y,"Nhiet do trong phong" )
-Tout = ctrl.Antecedent( Z,"Nhiet do ngoai troi" )
+Tout = ctrl.Antecedent( Z,"Nhiet do ngoai phong" )
 L    = ctrl.Consequent( W,"Muc dieu chinh" )
 
 # Đảm bảo đường dẫn đúng tới src/main/resources
@@ -97,12 +97,12 @@ model = ctrl.ControlSystemSimulation( ctrl.ControlSystem(rules) )
 
 iN = int( input("Số người: ") )
 iTin = float( input("Nhiệt độ trong phòng: ") )
-iTout = float( input("Nhiệt độ bên ngoài: ") )
+iTout = float( input("Nhiệt độ ngoài phòng: ") )
 model.input["So nguoi"] = iN
 model.input["Nhiet do trong phong"] = iTin
-model.input["Nhiet do ngoai troi"] = iTout
+model.input["Nhiet do ngoai phong"] = iTout
 
 model.compute()
 oL = model.output["Muc dieu chinh"]
 L.view( model )
-print( "Với %d người ở trong phòng, nhiệt độ trong phòng là %.1f và ngoài trời là %.1f thì mức điều chỉnh là %d" % (iN,iTin,iTout,oL) )
+print( "Với %d người ở trong phòng, nhiệt độ trong phòng là %.1f và ngoài phòng là %.1f thì mức điều chỉnh là %d" % (iN,iTin,iTout,oL) )
